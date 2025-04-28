@@ -32,7 +32,7 @@ def survey_and_recommend(survey: SurveyCreate, db: Session = Depends(get_db)):
     # 4. 추천 결과 저장
     saved_rec = recommendation_crud.save_recommendation(
         db=db,
-        survey_id=saved_survey.id,
+        survey_id=saved_survey.id, # type: ignore
         result=result["data"]
     )
 
