@@ -1,4 +1,5 @@
 # app/models/survey.py
+# 설문 테이블 모델
 
 from sqlalchemy import Column, Integer, String, JSON, TIMESTAMP, func
 from app.db.base import Base

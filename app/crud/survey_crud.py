@@ -1,4 +1,5 @@
 # app/crud/survey_crud.py
+# 설문 저장 로직
 
 from sqlalchemy.orm import Session
 from app.models.survey import Survey

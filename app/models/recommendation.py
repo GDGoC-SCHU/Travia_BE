@@ -1,0 +1,12 @@
+# 추천 결과 테이블 모델
+
+from sqlalchemy import Column, Integer, ForeignKey, JSON, TIMESTAMP, func
+from app.db.base import Base
+
+class Recommendation(Base):
+    __tablename__ = "recommendation"
+
+    id = Column(Integer, primary_key=True, index=True)
+    survey_id = Column(Integer, ForeignKey("survey.id"), nullable=False)
+    result = Column(JSON, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())

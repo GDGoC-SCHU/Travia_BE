@@ -1,4 +1,5 @@
 # app/schemas/survey.py
+# Pydantic 요청 스키마
 
 from pydantic import BaseModel
 from typing import Dict
