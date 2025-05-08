@@ -2,8 +2,18 @@
 # Pydantic 요청 스키마
 
 from pydantic import BaseModel
-from typing import Dict
+
+class Preferences(BaseModel):
+    companion: str
+    style: str
+    duration: str
+    driving: str
+    budget: str
+    climate: str
+    continent: str
+    density: str
 
 class SurveyCreate(BaseModel):
     username: str
-    preferences: Dict[str, str]  # 설문 결과 (질문-답변 형태)
+    preferences: Preferences
+
