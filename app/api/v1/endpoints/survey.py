@@ -8,11 +8,7 @@ from gemini_api.gemini_api_client import generate_travel_recommendation
 
 router = APIRouter()
 
-@router.post("/survey", summary="설문 제출")
-def create_survey(survey: SurveyCreate, db: Session = Depends(get_db)):
-    return survey_crud.create_survey(db=db, survey=survey)
-
-@router.post("/survey/recommend", summary="설문 제출 + AI 추천")
+@router.post("/survey/recommend", summary="설문 작성 및 AI 추천 결과 반환")
 def survey_and_recommend(survey: SurveyCreate, db: Session = Depends(get_db)):
     # 1. 설문 저장
     saved_survey = survey_crud.create_survey(db=db, survey=survey)
@@ -32,7 +28,7 @@ def survey_and_recommend(survey: SurveyCreate, db: Session = Depends(get_db)):
     # 4. 추천 결과 저장
     saved_rec = recommendation_crud.save_recommendation(
         db=db,
-        survey_id=saved_survey.id, # type: ignore
+        survey_id=saved_survey.id,  # type: ignore
         result=result["data"]
     )
 
