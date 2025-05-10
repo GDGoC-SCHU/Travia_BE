@@ -59,9 +59,13 @@ GOOGLE_API_KEY=your_google_api_key
 
 ### 2. 패키지 설치 및 가상환경 실행
 
+> Debian / Ubuntu 리눅스 환경에서는 사전에 `python3-venv` 패키지 설치 필요
+> `python` 명령어가 작동하지 않는 경우, 대신 `python3`을 사용
+
 ```bash
 python -m venv venv
 venv\Scripts\activate          # Windows
+source venv/bin/activate       # Linux
 pip install -r requirements.txt
 ```
 
@@ -69,9 +73,12 @@ pip install -r requirements.txt
 
 ### 3. 테이블 생성 (최초 1회)
 
+> `F:\travia` 부분은 현재 프로젝트 폴더가 위치한 곳으로 대체하여 실행
+
 ```bash
 cd F:\trivia
-set PYTHONPATH=.
+set PYTHONPATH=.               # Windows
+export PYTHONPATH=.            # Linux
 python app/db/init_db.py
 ```
 
