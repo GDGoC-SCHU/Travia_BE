@@ -1,4 +1,3 @@
-# 필요한 라이브러리 불러오기
 import os                            # 환경변수 사용을 위한 os 모듈
 import json                          # JSON 문자열 → Python dict 변환을 위한 json 모듈
 from dotenv import load_dotenv       # .env 파일에서 환경변수를 불러오기 위한 dotenv 모듈
