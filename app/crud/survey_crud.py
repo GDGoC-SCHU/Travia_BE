@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.models.survey import Survey
 from app.schemas.survey import SurveyCreate
 
-def create_survey(db: Session, survey: SurveyCreate):
+def create_survey(db, survey):
     db_survey = Survey(
         username=survey.username,
         preferences=survey.preferences.dict()
@@ -13,3 +13,4 @@ def create_survey(db: Session, survey: SurveyCreate):
     db.commit()
     db.refresh(db_survey)
     return db_survey
+

@@ -29,4 +29,10 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     
     # 🔐 토큰 생성
     token = create_access_token(data={"sub": db_user.nickname})
-    return {"status": "success", "token": token}
+    return {
+        "status": "success",
+        "token": token,
+        "user_id": db_user.id,
+        "nickname": db_user.nickname
+    }
+
