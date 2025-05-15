@@ -1,21 +1,26 @@
-# app/db/session.py
 # DB 연결
 
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 from dotenv import load_dotenv
+
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+# ✅ 환경변수 우선순위: SQLALCHEMY_DATABASE_URL > DATABASE_URL
+SQLALCHEMY_DATABASE_URL = (
+    os.getenv("SQLALCHEMY_DATABASE_URL")
+    or os.getenv("DATABASE_URL")
+)
 
-if DATABASE_URL is None:
-    raise ValueError("DATABASE_URL is not set in the environment variables.")
+if not SQLALCHEMY_DATABASE_URL:
+    raise ValueError("❌ DB 연결 문자열이 환경변수에 없습니다 (.env에 SQLALCHEMY_DATABASE_URL 또는 DATABASE_URL 필요)")
 
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+# ✅ DB 연결 및 세션 설정
+engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# ✅ FastAPI 의존성 주입용
 def get_db():
     db = SessionLocal()
     try:

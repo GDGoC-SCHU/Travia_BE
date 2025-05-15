@@ -1,11 +1,11 @@
-# app/schemas/survey.py
 # Pydantic 요청 스키마
 
 from pydantic import BaseModel
+from typing import List
 
 class Preferences(BaseModel):
     companion: str
-    style: str
+    style: List[str]
     duration: str
     driving: str
     budget: str
