@@ -14,14 +14,14 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
         return {"status": "success", "user_id": db_user.id}
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=400, detail="Nickname already exists")
+        raise HTTPException(status_code=400, detail="ID already exists")
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 @router.post("/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
-    db_user = user_crud.authenticate_user(db, user.nickname, user.password)
+    db_user = user_crud.authenticate_user(db, user.id, user.password)
     if not db_user:
-        raise HTTPException(status_code=400, detail="Invalid nickname or password")
+        raise HTTPException(status_code=400, detail="Invalid ID or Password")
     return {"status": "success", "user_id": db_user.id}

@@ -7,14 +7,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_user(db: Session, user: UserSignup):
     hashed_pw = pwd_context.hash(user.password)
-    db_user = User(name=user.name, nickname=user.nickname, hashed_password=hashed_pw)
+    db_user = User(name=user.name, id=user.id, hashed_password=hashed_pw)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
-def authenticate_user(db: Session, nickname: str, password: str):
-    db_user = db.query(User).filter(User.nickname == nickname).first()
+def authenticate_user(db: Session, id: str, password: str):
+    db_user = db.query(User).filter(User.id == id).first()
     if not db_user or not pwd_context.verify(password, db_user.hashed_password):
         return None
     return db_user
