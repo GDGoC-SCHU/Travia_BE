@@ -1,66 +1,69 @@
-
 # 🌍 Travia Backend
 
-**AI 여행 성향 기반 세계 여행지 + 일정 추천 서비스**  
-Travia는 사용자의 간단한 설문 응답을 바탕으로, Google Gemini API를 통해  
-성향에 맞는 여행 도시와 일자별 일정을 자동으로 생성해주는 추천 서비스입니다.
+**AI-Based Global Travel Destination + Itinerary Recommendation Service일정 추천 서비스**
+Travia is a recommendation service that automatically generates travel cities and daily schedules that match the user's preferences through Google Gemini API based on the user's simple survey responses.
 
 ---
 
-## ✅ 주요 기능
+## ✅ Key Features
 
-- 설문 응답을 DB에 저장
-- 설문 결과 기반 프롬프트 자동 생성
-- Google Gemini 1.5 Flash API 연동
-- 도시 추천 + 4박 5일 일정표 생성
-- 추천 결과를 DB에 저장 및 응답
+- Store user survey responses in the database
+- Automatically generate prompts from survey data
+- Integrate with Google Gemini 1.5 Flash API
+- City recommendation and itinerary generation
+- Store and return the recommendation results
+- User signup/login system with JWT authentication
 
 ---
 
-## 🧱 현재 프로젝트 구조
+## 🧱 Project Structure
 
 ```
-trivia/
+Travia_BE/
 ├── .env                        # 환경 변수 설정 파일
 ├── gemini_api/
 │   └── gemini_api_client.py    # Gemini API 호출 및 JSON 파싱
 ├── app/
 │   ├── main.py                 # FastAPI 앱 정의 및 라우터 등록
 │   ├── api/v1/endpoints/
-│   │   └── survey.py           # 설문 + 추천 API 정의
+│   │   ├── survey.py           # 설문 + 추천 API 정의
+│   │   └── auth.py           
 │   ├── crud/
 │   │   ├── survey_crud.py
-│   │   └── recommendation_crud.py
+│   │   ├── recommendation_crud.py
+│   │   └── user_crud.py
 │   ├── db/
 │   │   ├── session.py
 │   │   ├── base.py
 │   │   └── init_db.py
 │   ├── models/
 │   │   ├── survey.py
-│   │   └── recommendation.py
+│   │   ├── recommendation.py
+│   │   └── user.py
 │   ├── schemas/
-│   │   └── survey.py
+│   │   ├── survey.py
+│   │   └── user.py
 │   └── services/
 │       └── prompt_builder.py   # 설문 → Gemini 프롬프트 생성 함수
 ```
 
 ---
 
-## ⚙️ 실행 방법
+## ⚙️ How to Run
 
-### 1. `.env` 파일 설정
+### 1. Set up the `.env` file
 
 ```env
-DATABASE_URL=mysql+pymysql://root:yourpassword@localhost:3306/travia
-GOOGLE_API_KEY=your_google_api_key
+DATABASE_URL="mysql+pymysql://root:yourpassword@localhost:3306/travia"
+GOOGLE_API_KEY="your_google_api_key"
 ```
 
 ---
 
-### 2. 패키지 설치 및 가상환경 실행
+### 2. Set up virtual environment and install packages
 
-> Debian / Ubuntu 리눅스 환경에서는 사전에 `python3-venv` 패키지 설치 필요
-> `python` 명령어가 작동하지 않는 경우, 대신 `python3`을 사용
+> On Debian/Ubuntu, install `python3-venv` first.
+> If `python` doesn’t work, try using `python3`.
 
 ```bash
 python -m venv venv
@@ -71,9 +74,9 @@ pip install -r requirements.txt
 
 ---
 
-### 3. 테이블 생성 (최초 1회)
+### 3. Initialize database tables (run once)
 
-> `F:\travia` 부분은 현재 프로젝트 폴더가 위치한 곳으로 대체하여 실행
+> Replace `F:\travia` with the actual project path on your machine
 
 ```bash
 cd F:\trivia
@@ -84,7 +87,7 @@ python app/db/init_db.py
 
 ---
 
-### 4. 서버 실행
+### 4. Run the server
 
 ```bash
 uvicorn app.main:app --reload
@@ -92,30 +95,36 @@ uvicorn app.main:app --reload
 
 ---
 
-## 🔌 API 명세
+## 🔌 API Specification
 
 ### ✅ POST `/api/v1/survey/recommend`  
-설문을 저장하고 → Gemini 호출 → 추천 결과도 저장
+Saves the survey → Calls Gemini → Saves and returns recommendation
 
-#### 요청 예시
+### ✅ POST `/api/v1/auth/login`
+Authenticate user and issue JWT token
+
+### ✅ POST `/api/v1/auth/signup`
+Register a new user account
+
+#### Sample Request
 
 ```json
 {
   "username": "lee",
   "preferences": {
-    "companion": "커플",
-    "style": "감성, 먹방",
-    "duration": "4박 5일",
-    "driving": "불가능",
-    "budget": "1500000원",
-    "climate": "따뜻한 곳",
-    "continent": "동남아",
-    "density": "적당히"
+    "companion": "Couple",
+    "style": "Emotional, Foodie",
+    "duration": "5 days 4 nights",
+    "driving": "No",
+    "budget": "1,500,000 KRW",
+    "climate": "Warm",
+    "continent": "Southeast Asia",
+    "density": "Moderate"
   }
 }
 ```
 
-#### 응답 예시
+#### Sample Response
 
 ```json
 {
@@ -124,8 +133,8 @@ uvicorn app.main:app --reload
   "recommendation_id": 1,
   "data": [
     {
-      "city": "치앙마이",
-      "country": "태국",
+      "city": "Chiang Mai",
+      "country": "Thailand",
       "schedule": {
         "day_1": [...],
         "day_2": [...],
@@ -138,33 +147,33 @@ uvicorn app.main:app --reload
 
 ---
 
-## 🗃️ 데이터베이스 구조
+## 🗃️ Database Schema
 
-### 📌 `survey` 테이블
+### 📌 `survey` Table
 
-| 컬럼 | 타입 | 설명 |
+| Column | Type | Description |
 |------|------|------|
-| id | int (PK) | 설문 ID |
-| username | string | 사용자명 |
-| preferences | JSON | 설문 응답 전체 |
-| created_at | timestamp | 생성일시 |
+| id | int (PK) | Survey ID |
+| username | string | User nickname |
+| preferences | JSON | Survey answers |
+| created_at | timestamp | Creation timestamp |
 
 ---
 
-### 📌 `recommendation` 테이블
+### 📌 `recommendation` Table
 
-| 컬럼 | 타입 | 설명 |
+| Column | Type | Description |
 |------|------|------|
-| id | int (PK) | 추천 ID |
-| survey_id | int (FK) | 설문 ID |
-| result | JSON | AI 추천 결과 |
-| created_at | timestamp | 생성일시 |
+| id | int (PK) | Recommendation ID |
+| survey_id | int (FK) | Related survey ID |
+| result | JSON | Gemini recommendation |
+| created_at | timestamp | Creation timestamp |
 
 ---
 
-## 💬 기타
+## 💬 Notes
 
-- API 테스트는 [Postman](https://www.postman.com/) 또는 Swagger UI(`http://localhost:8000/docs`) 사용 가능
-- Gemini 응답 포맷은 JSON이며, `city`, `reason`, `schedule` 포함
+- You can test the API using [Postman](https://www.postman.com/) or Swagger UI at (`http://localhost:8000/docs`)
+- Gemini responses are in JSON format, including `city`, `reason`, `schedule`
 
 ---
