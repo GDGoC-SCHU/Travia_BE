@@ -1,6 +1,6 @@
 # 🌍 Travia Backend
 
-**AI-Based Global Travel Destination + Itinerary Recommendation Service일정 추천 서비스**
+**AI-Based Global Travel Destination + Itinerary Recommendation Service**
 Travia is a recommendation service that automatically generates travel cities and daily schedules that match the user's preferences through Google Gemini API based on the user's simple survey responses.
 
 ---
@@ -20,14 +20,14 @@ Travia is a recommendation service that automatically generates travel cities an
 
 ```
 Travia_BE/
-├── .env                        # 환경 변수 설정 파일
+├── .env                        # Environment variable configuration file
 ├── gemini_api/
-│   └── gemini_api_client.py    # Gemini API 호출 및 JSON 파싱
+│   └── gemini_api_client.py    # Gemini API call and JSON parsing
 ├── app/
-│   ├── main.py                 # FastAPI 앱 정의 및 라우터 등록
+│   ├── main.py                 # FastAPI application and router registration
 │   ├── api/v1/endpoints/
-│   │   ├── survey.py           # 설문 + 추천 API 정의
-│   │   └── auth.py           
+│   │   ├── survey.py           # Survey submission and recommendation API
+│   │   └── auth.py             # Authentication API (login/signup)
 │   ├── crud/
 │   │   ├── survey_crud.py
 │   │   ├── recommendation_crud.py
@@ -44,7 +44,7 @@ Travia_BE/
 │   │   ├── survey.py
 │   │   └── user.py
 │   └── services/
-│       └── prompt_builder.py   # 설문 → Gemini 프롬프트 생성 함수
+│       └── prompt_builder.py   # Converts survey input into Gemini prompt
 ```
 
 ---
