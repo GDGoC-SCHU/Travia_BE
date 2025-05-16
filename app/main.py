@@ -1,20 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.v1.endpoints import survey, auth  # ✅ auth 라우터 import
+from app.api.v1.endpoints import survey, auth  
 from app.db.init_db import init_db
 
 app = FastAPI(title="Travia API", version="1.0")
 init_db()
 
-# ✅ CORS 설정 추가
+#  CORS 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # 또는 ["*"]로 임시 전체 허용 가능
+    allow_origins=["http://localhost:3000"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ 라우터 연결
-app.include_router(survey.router, prefix="/api/v1/survey")  # 기존 설문 라우터
-app.include_router(auth.router, prefix="/api/auth")         # 신규 auth 라우터 추가
+app.include_router(survey.router, prefix="/api/v1/survey") 
+app.include_router(auth.router, prefix="/api/auth")         

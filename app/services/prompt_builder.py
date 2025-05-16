@@ -1,4 +1,4 @@
-# 설문 → Gemini 프롬프트 생성 함수
+# Survey → Gemini prompt generation function
 
 def generate_prompt_from_survey(preferences) -> str:
     return f"""

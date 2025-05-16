@@ -1,5 +1,3 @@
-# 추천 결과 테이블 모델
-
 from sqlalchemy import Column, Integer, ForeignKey, JSON, TIMESTAMP, func
 from app.db.base import Base
 

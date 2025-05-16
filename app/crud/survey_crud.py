@@ -1,8 +1,4 @@
-# 설문 저장 로직
-
-from sqlalchemy.orm import Session
 from app.models.survey import Survey
-from app.schemas.survey import SurveyCreate
 
 def create_survey(db, survey):
     db_survey = Survey(

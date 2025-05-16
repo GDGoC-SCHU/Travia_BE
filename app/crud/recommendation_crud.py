@@ -1,6 +1,3 @@
-# 추천 결과 저장 로직
-
-from sqlalchemy.orm import Session
 from app.models.recommendation import Recommendation
 
 def save_recommendation(db, survey_id: int, result: dict):

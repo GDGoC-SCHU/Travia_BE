@@ -15,7 +15,7 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
         return {"status": "success", "user_id": db_user.id}
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=400, detail="Nickname already exists")
+        raise HTTPException(status_code=400, detail="username already exists")
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
@@ -24,16 +24,16 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
 def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = user_crud.authenticate_user(db, user.username, user.password)
     if not db_user:
-        raise HTTPException(status_code=400, detail="Invalid nickname or password")
+        raise HTTPException(status_code=400, detail="Invalid username or password")
     return {
         "status": "success",
         "user_id": db_user.id,
         "username": db_user.username}
 
-@router.get("/check-username", summary="username 중복 여부 확인")
+@router.get("/check-username", summary="Check if the user name is duplicated")
 def check_username(username: str, db: Session = Depends(get_db)):
     exists = db.query(User).filter(User.username == username).first()
     return {
         "username": username,
-        "is_available": not bool(exists)  # 사용 가능하면 True
+        "is_available": not bool(exists)  
     }
