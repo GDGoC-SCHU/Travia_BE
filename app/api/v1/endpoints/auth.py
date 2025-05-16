@@ -21,7 +21,10 @@ def signup(user: UserSignup, db: Session = Depends(get_db)):
 
 @router.post("/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
-    db_user = user_crud.authenticate_user(db, user.nickname, user.password)
+    db_user = user_crud.authenticate_user(db, user.username, user.password)
     if not db_user:
         raise HTTPException(status_code=400, detail="Invalid nickname or password")
-    return {"status": "success", "user_id": db_user.id}
+    return {
+        "status": "success",
+        "user_id": db_user.id,
+        "username": db_user.username}

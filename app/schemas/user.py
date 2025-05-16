@@ -1,10 +1,11 @@
 from pydantic import BaseModel
 
+# app/schemas/user.py
 class UserSignup(BaseModel):
-    name: str
-    nickname: str
+    username: str
     password: str
 
 class UserLogin(BaseModel):
-    nickname: str
+    username: str
     password: str
+
