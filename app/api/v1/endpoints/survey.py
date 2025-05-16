@@ -91,3 +91,8 @@ def delete_survey(survey_id: int, db: Session = Depends(get_db)):
     # 3. 반영
     db.commit()
     return {"status": "success", "message": "Survey and recommendation deleted"}
+
+
+
+
+

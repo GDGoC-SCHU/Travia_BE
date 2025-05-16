@@ -1,3 +1,4 @@
+from app.models.user import User
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
@@ -28,3 +29,11 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         "status": "success",
         "user_id": db_user.id,
         "username": db_user.username}
+
+@router.get("/check-username", summary="username 중복 여부 확인")
+def check_username(username: str, db: Session = Depends(get_db)):
+    exists = db.query(User).filter(User.username == username).first()
+    return {
+        "username": username,
+        "is_available": not bool(exists)  # 사용 가능하면 True
+    }
